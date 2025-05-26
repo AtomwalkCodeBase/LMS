@@ -14,7 +14,7 @@ const { width } = Dimensions.get('window');
 
 // Styled Components
 const GradientBackground = styled(LinearGradient).attrs({
-  colors: ['#ffd6b3', '#f7dce0'],
+  colors: ['#c2fbcd', '#ffdde1'],
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
 })`
@@ -54,7 +54,8 @@ const SubText = styled.Text`
 `;
 
 const ButtonRow = styled.View`
-   flex-direction: row;
+    display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
     margin-top: 10px;
@@ -64,14 +65,14 @@ const ButtonRow = styled.View`
 const ActionButton = styled.TouchableOpacity`
   background-color: ${(props) => props.bgColor || '#007bff'};
   width: ${(props) => (props.fullWidth ? `${width * 0.85}px` : `${width * 0.4}px`)};
-  padding: 10px;
+  padding:10px  0px 10px 0px;
   border-radius: 8px;
   margin-bottom: 10px;
 `;
 
 const ButtonText = styled.Text`
   color: #fff;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: bold;
   text-align: center;
 `;
@@ -129,7 +130,7 @@ const StatusText = styled.Text`
     color: ${(props) => props.textColor || '#454545'};
 `;
 
-const ManagerActivityScreen = ({ activityType = 'PROJECT' , user }) => {
+const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) => {
   const navigation = useNavigation();
   const router = useRouter();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -184,7 +185,8 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user }) => {
   };
   
 
-  const fetchActivityDetails = React.useCallback(async (type) => {
+  const fetchActivityDetails = async (type) => {
+    // alert(type);
     try {
       setLoading(true);
       const response = await getManagerActivityList({ call_mode: type });
@@ -239,25 +241,34 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
   
   
   
 
-  
+  useEffect(() => {
+    fetchActivityDetails(activityType);
+    // Cleanup function to clear activities when screen loses focus
+    return () => {
+      setActivities([]); // Clear activities
+      setFilterValue(''); // Reset filter value
+      setCurrentPage(1);  // Reset pagination
+    };
+  },[activityType]
+  )
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchActivityDetails(activityType);
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     fetchActivityDetails(activityType);
   
-      // Cleanup function to clear activities when screen loses focus
-      return () => {
-        setActivities([]); // Clear activities
-        setFilterValue(''); // Reset filter value
-        setCurrentPage(1);  // Reset pagination
-      };
-    }, [activityType, fetchActivityDetails])
-  );
+  //     // Cleanup function to clear activities when screen loses focus
+  //     return () => {
+  //       setActivities([]); // Clear activities
+  //       setFilterValue(''); // Reset filter value
+  //       setCurrentPage(1);  // Reset pagination
+  //     };
+  //   }, [activityType])
+  // );
   
 
   const filteredActivities = useMemo(
@@ -275,6 +286,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user }) => {
   );
 
   const handleBackPress = () => {
+    setCallType('PROJECT');
     setActivities([]); // Clear the activity list
     setFilterValue('');
     navigation.goBack();

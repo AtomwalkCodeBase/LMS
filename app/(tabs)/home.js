@@ -10,12 +10,11 @@ const Home = () => {
   const [isManager, setIsManager] = useState(false);
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     getProfileInfo()
       .then((res) => {
         setProfile(res.data);
-        setIsManager(res?.data?.user_group?.is_manager || false);
+        setIsManager(res?.data?.user_group?.is_admin||res?.data?.user_group?.is_owner||res?.data?.user_group?.is_manager);
         setLoading(false);
       })
       .catch(() => {
@@ -24,14 +23,6 @@ const Home = () => {
       });
   }, []);
 
-  if (loading) {
-    return (
-      <SafeAreaView>
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
-
   return (
     <SafeAreaView>
       {isManager ? <ManagerHomePage /> : <HomeScreen />}
@@ -39,5 +30,4 @@ const Home = () => {
     </SafeAreaView>
   );
 };
-
 export default Home;

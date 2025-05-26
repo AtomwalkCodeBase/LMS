@@ -20,7 +20,6 @@ const Activity = () => {
       setCallType(params.call_type || 'PROJECT'); // Refresh callType each time page is entered
     }, [params.call_type])
   );
-
   useEffect(() => {
     getProfileInfo()
       .then((res) => {
@@ -38,18 +37,18 @@ const Activity = () => {
 
   console.log('Profile==', user);
 
-  if (loading) {
-    return (
-      <SafeAreaView>
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <SafeAreaView>
+  //       <Text>Loading...</Text>
+  //     </SafeAreaView>
+  //   );
+  // }
 
   return (
     <View style={{ flex: 1 }}>
       {isManager ? (
-        <ManagerActivityScreen activityType={callType} user={user} />
+        <ManagerActivityScreen activityType={callType} setCallType={setCallType} user={user} />
       ) : (
         <ActivityScreen data="PENDING" />
       )}

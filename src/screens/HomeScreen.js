@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, FlatList, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Dimensions, ScrollView, TouchableOpacity,StyleSheet  } from 'react-native';
 import styled from 'styled-components/native';
 import InfoCard from '../components/InfoCard';
 import { AppContext } from '../../context/AppContext';
@@ -8,6 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useRouter } from 'expo-router';
 import { getActivityList } from '../services/productServices';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
@@ -17,7 +18,7 @@ const Container = styled.View`
 `;
 
 const GradientBackground = styled(LinearGradient).attrs({
-  colors: ['#ffd6b3', '#f7dce0'],
+  colors: ['#c2fbcd', '#ffdde1'],
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
 })`
@@ -32,7 +33,7 @@ const CompanyContainer = styled.View`
   /* height: 20%; */
   width: 100%;
   padding: 10px;
-  background-color: #fb9032;
+  background-color: #c2fbcd;
   align-items: center;
   gap: 20PX;
   /* justify-content: space-between; */
@@ -212,7 +213,7 @@ const HomePage = () => {
 
   return (
     <Container>
-      <StatusBar barStyle="light-content" backgroundColor="rgb(252, 128, 20)" />
+      <StatusBar style="dark" backgroundColor="#c2fbcd" />
       <GradientBackground>
       <CompanyContainer>
       <LogoContainer>
@@ -222,27 +223,22 @@ const HomePage = () => {
         <CompanyName>{company.name || 'Atomwalk Technologies'}</CompanyName>
         <SubHeader>Welcome to Atomwalk Office!</SubHeader>
         </CompanyTextContainer>
-        
         </CompanyContainer>
-        <ProfileTextContainer>
+      {activities.length>0?<><ProfileTextContainer>
           <CompanyName>My Activities</CompanyName>
-        
         </ProfileTextContainer>
-       
-
         {/* Cards Layout */}
+       
         <Row>
-          <InfoCard number={total} label="TOTAL" iconName="bell" gradientColors={['#007bff', '#00c6ff']} onPress={handleProjectClick} />
+          <InfoCard number={total} label="TOTAL" iconName="beaker-outline" gradientColors={['#007bff', '#00c6ff']} onPress={handleProjectClick} />
           <InfoCard number={completed} label="DONE" iconName="check-circle" gradientColors={['#38ef7d', '#11998e']} onPress={handleCompletedClick} />
         </Row>
-
         <Row>
           <InfoCard number={pending} label="PENDING" iconName="format-list-checks" gradientColors={['#f09819', '#ff512f']} onPress={handlePendingClick} />
           <InfoCard number={overdue} label="OVER DUE" iconName="alert" gradientColors={['#e52d27', '#b31217']} onPress={handleOverdueClick} />
-        </Row>
-
+        </Row>       
         {/* Scrollable Activity List */}
-        <ActivityContainer>
+      <ActivityContainer>
         <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10, color: '#454545' }}>My Projects</Text>
           <FlatList
             data={[...activities].reverse()}
@@ -257,9 +253,27 @@ const HomePage = () => {
             style={{ maxHeight: 200 }}
           />
         </ActivityContainer>
+      </>:
+      <View style={styles.container}>
+      <MaterialIcons name="info-outline" size={48} color="#4CAF50" />
+      <Text style={styles.text}>No Projects Available</Text>
+    </View>}
       </GradientBackground>
     </Container>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 200,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 10,
+    color: '#4CAF50', // Green color
+  },
+});
 export default HomePage;

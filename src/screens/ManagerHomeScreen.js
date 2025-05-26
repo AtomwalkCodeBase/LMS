@@ -18,7 +18,7 @@ background-color: #f5f5f5;
 `;
 
 const GradientBackground = styled(LinearGradient).attrs({
-colors: ['#ffd6b3', '#f7dce0'],
+colors: ['#c2fbcd', '#ffdde1'],
 start: { x: 0, y: 0 },
 end: { x: 1, y: 1 },
 })`
@@ -31,7 +31,7 @@ display: flex;
 flex-direction: row;
 width: 100%;
 padding: 0px 10px;
-background-color: #fb9032;
+background-color: #c2fbcd;
 align-items: center;
 gap: 20PX;
 `;
@@ -193,7 +193,7 @@ const cardColors = [
 
 return (
     <Container>
-        <StatusBar barStyle="light-content" backgroundColor="rgb(252, 128, 20)" />
+        <StatusBar style="dark" backgroundColor="#c2fbcd" />
         <Loader visible={loading} />
         <GradientBackground>
             <CompanyContainer>
@@ -242,7 +242,7 @@ return (
                 <InfoCard
                         number={total}
                         label="Planned Today"
-                        iconName="bell"
+                        iconName="application-edit-outline"
                         gradientColors={cardColors[1]}
                         onPress={() => handleCardClick('GET_DT')}
                     />
@@ -259,7 +259,7 @@ return (
                     <InfoCard
                         number={dueTomorow}
                         label="Due Tomorrow"
-                        iconName="bell"
+                        iconName="account-clock-outline"
                         gradientColors={cardColors[3]}
                         onPress={() => handleCardClick('GET_D1')}
                     />
@@ -283,7 +283,7 @@ return (
                     <InfoCard
                         number={future}
                         label="Future Activity"
-                        iconName="check-circle"
+                        iconName="calendar-clock-outline"
                         gradientColors={cardColors[2]}
                         onPress={() => handleCardClick('GET_FC')}
                     />

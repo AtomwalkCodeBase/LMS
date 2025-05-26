@@ -11,7 +11,7 @@ import { getActivityList } from '../services/productServices';
 const { width } = Dimensions.get('window');
 
 const GradientBackground = styled(LinearGradient).attrs({
-    colors: ['#ffd6b3', '#f7dce0'],
+    colors: ['#c2fbcd', '#ffdde1'],
     start: { x: 0, y: 0 },
     end: { x: 1, y: 1 },
 })`
@@ -71,6 +71,7 @@ const StatusText = styled.Text`
 `;
 
 const ButtonRow = styled.View`
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -79,18 +80,18 @@ const ButtonRow = styled.View`
 `;
 
 const ActionButton = styled.TouchableOpacity`
-    background-color: ${(props) => props.bgColor || '#007bff'};
-    width: ${(props) => (props.fullWidth ? `${width * 0.85}px` : `${width * 0.4}px`)};
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
+  background-color: ${(props) => props.bgColor || '#007bff'};
+  width: ${(props) => (props.fullWidth ? `${width * 0.85}px` : `${width * 0.4}px`)};
+  padding:10px  0px 10px 0px;
+  border-radius: 8px;
+  margin-bottom: 10px;
 `;
 
 const ButtonText = styled.Text`
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
 `;
 
 const FilterContainer = styled.View`

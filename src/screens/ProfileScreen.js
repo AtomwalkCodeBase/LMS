@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 // Styled components
 const GradientBackground = styled(LinearGradient).attrs({
-  colors: ['#ffd6b3', '#f7dce0'],
+  colors: ['#c2fbcd', '#ffdde1'],
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
 })`
