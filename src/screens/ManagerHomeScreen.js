@@ -5,7 +5,7 @@ import InfoCard from '../components/InfoCard';
 import { AppContext } from '../../context/AppContext';
 import { getCompanyInfo, getProfileInfo } from '../services/authServices';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'expo-status-bar';
+
 import { useRouter } from 'expo-router';
 import { getActivityList, getManagerActivityList } from '../services/productServices';
 import InfoCardSmall from '../components/InfoCardSmall';
@@ -144,23 +144,23 @@ useEffect(() => {
 
 
 
-const fetchActivityDetails = () => {
+const fetchActivityDetails = (callType) => {
     setLoading(true);
     const data = {
-        call_mode: 'PROJECT',
+        call_mode: callType || 'PROJECT',
       };
     getManagerActivityList(data)
         .then((res) => {
             console.log('response',res?.data)
-            setActivities(res?.data?.activity_list);
-            setOverdue(res?.data?.over_due_count);
-            setToday(res?.data?.due_today);
-            setDueToday(res?.data?.due_today_completed);
-            setFuture(res?.data?.future_completed);
-            setCompleted(res?.data?.over_due_completed);
-            setDueTomorow(res?.data?.due_tomorrow);
-            setOverDueNS(res?.data?.due_7_days);
-            setOverDueAS(res?.data?.not_due_count);
+            setActivities(res?.data?.activity_list || []);
+            setOverdue(res?.data?.over_due_count || 0);
+            setToday(res?.data?.due_today || 0);
+            setDueToday(res?.data?.due_today_completed || 0);
+            setFuture(res?.data?.future_completed || 0);
+            setCompleted(res?.data?.over_due_completed || 0);
+            setDueTomorow(res?.data?.due_tomorrow || 0);
+            setOverDueNS(res?.data?.due_7_days || 0);
+            setOverDueAS(res?.data?.not_due_count || 0);
         })
         .catch((error) => console.log('Error on home screen', error))
         .finally(() => setLoading(false));
@@ -193,7 +193,6 @@ const cardColors = [
 
 return (
     <Container>
-        <StatusBar style="dark" backgroundColor="#c2fbcd" />
         <Loader visible={loading} />
         <GradientBackground>
             <CompanyContainer>

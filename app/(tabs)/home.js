@@ -24,7 +24,7 @@ const Home = () => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
       {isManager ? <ManagerHomePage /> : <HomeScreen />}
       <PinPopup />
     </SafeAreaView>

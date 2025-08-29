@@ -5,7 +5,7 @@ import InfoCard from '../components/InfoCard';
 import { AppContext } from '../../context/AppContext';
 import { getCompanyInfo, getProfileInfo } from '../services/authServices';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'expo-status-bar';
+
 import { useRouter } from 'expo-router';
 import { getActivityList } from '../services/productServices';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -162,7 +162,8 @@ const HomePage = () => {
   const fetchActivityDetails = () => {
     getActivityList()
       .then((res) => {
-        const uniqueActivities = res?.data?.a_list.reduce((acc, current) => {
+        const aList = res?.data?.a_list || [];
+        const uniqueActivities = aList.reduce((acc, current) => {
           const x = acc.find(item => item.ref_num === current.ref_num);
           if (!x) {
             acc.push(current);
@@ -170,11 +171,11 @@ const HomePage = () => {
           return acc;
         }, []);
         setActivities(uniqueActivities);
-        setTotal(res?.data?.project_count);
-        setReview(res?.data?.review_count);
-        setCompleted(res?.data?.completed_count);
-        setPending(res?.data?.pending_count);
-        setOverdue(res?.data?.over_due_count);
+        setTotal(res?.data?.project_count || 0);
+        setReview(res?.data?.review_count || 0);
+        setCompleted(res?.data?.completed_count || 0);
+        setPending(res?.data?.pending_count || 0);
+        setOverdue(res?.data?.over_due_count || 0);
       })
       .catch((error) => {
         console.log('Error',error);
@@ -213,7 +214,6 @@ const HomePage = () => {
 
   return (
     <Container>
-      <StatusBar style="dark" backgroundColor="#c2fbcd" />
       <GradientBackground>
       <CompanyContainer>
       <LogoContainer>

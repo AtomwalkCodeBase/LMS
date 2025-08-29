@@ -46,13 +46,13 @@ const Activity = () => {
   // }
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
       {isManager ? (
         <ManagerActivityScreen activityType={callType} setCallType={setCallType} user={user} />
       ) : (
         <ActivityScreen data="PENDING" />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from "styled-components/native";
-import Constants from "expo-constants";
 
 // Colors
 export const colors = {
@@ -26,14 +25,11 @@ export const colors = {
   darkgrey: '#4c4c4c',
 };
 
-const statusBarHeight = Constants.statusBarHeight;
-
 export const Container = styled.SafeAreaView`
   background-color: ${colors.primary};
   padding: 20px;
   padding-bottom: 0px;
   flex: 1;
-  padding-top: ${statusBarHeight}px;
 `;
 
 // Header
