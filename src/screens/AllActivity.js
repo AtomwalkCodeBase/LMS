@@ -154,7 +154,7 @@ const ActivityScreen = (props) => {
         try {
             const res = await getActivityList();
             let fetchedActivities = res?.data?.a_list || [];
-    
+
             // Helper function to parse 'DD-MMM-YYYY' into a Date object
             const parseDate = (dateStr) => {
                 if (!dateStr) return null;
@@ -165,9 +165,9 @@ const ActivityScreen = (props) => {
                 };
                 return new Date(year, months[month], day);
             };
-    
+
             const currentDate = new Date(); // Current date as a Date object
-    
+
             // Map activity_status codes to status labels
             const mapActivityStatus = {
                 '01': 'PLANNED',
@@ -177,13 +177,13 @@ const ActivityScreen = (props) => {
                 '09': 'NOT ALLOCATED',
                 '99': 'NOT REQUIRED',
             };
-    
+
             // Update the activities based on due_date, activity_status, and conditions
             fetchedActivities = fetchedActivities.map((activity) => {
                 const dueDate = parseDate(activity.due_date); // Parse due_date to Date object
-    
+
                 let status = mapActivityStatus[activity.activity_status] || 'UNKNOWN'; // Default to 'UNKNOWN'
-    
+
                 // Check if overdue
                 if ((activity.activity_status === '01' || activity.activity_status === '02') && activity.is_over_due) {
                     status = 'OVER-DUE';
@@ -192,13 +192,13 @@ const ActivityScreen = (props) => {
                 } else if (activity.no_hold === 0 && activity.no_pending === 0) {
                     status = 'COMPLETED';
                 }
-    
+
                 return {
                     ...activity,
                     status,
                 };
             });
-    
+
             // Filter activities based on activityType
             if (activityType === 'PENDING') {
                 fetchedActivities = fetchedActivities.filter(
@@ -213,16 +213,12 @@ const ActivityScreen = (props) => {
                     (activity) => activity.status === 'COMPLETED'
                 );
             }
-    
+
             setActivities(fetchedActivities);
         } catch (error) {
             console.error('Error fetching activities:', error);
         }
     };
-    
-    
-    
-    
 
     const applyFilter = () => {
         if (!filterValue) {
@@ -252,7 +248,7 @@ const ActivityScreen = (props) => {
         });
     };
 
-    const handleInventoryClick = (id,type) => {
+    const handleInventoryClick = (id, type) => {
         router.push({
             pathname: 'InventoryData',
             params: { ref_num: id, ref_type: type },
@@ -300,19 +296,17 @@ const ActivityScreen = (props) => {
                 return '#fff'; // Gray for unknown or default status
         }
     };
-    
+
 
     const dropdownData = getUniqueRefNums();
-
-    console.log('Activity List---',activities)
 
     const renderItem = ({ item: activity }) => (
         <Card>
             <Row>
                 <BoldText>{activity.sale_order_no || activity.ref_num}</BoldText>
                 <StatusBadge bgColor={getBadgeColor(activity.status)}>
-                <StatusText textColor={getBadgeTextColor(activity.status)}>{activity.status}</StatusText>
-            </StatusBadge>
+                    <StatusText textColor={getBadgeTextColor(activity.status)}>{activity.status}</StatusText>
+                </StatusBadge>
             </Row>
             <SubText>{activity.ref_num || 'None'}</SubText>
             <SubText>{activity.activity_name || 'None'}</SubText>
@@ -336,13 +330,13 @@ const ActivityScreen = (props) => {
                         </ActionButton>
                         <ActionButton
                             bgColor="#4285f4"
-                            onPress={() => handleInventoryClick(activity.activity_id,'INV_IN')}
+                            onPress={() => handleInventoryClick(activity.activity_id, 'INV_IN')}
                         >
                             <ButtonText>Inventory Update</ButtonText>
                         </ActionButton>
                         <ActionButton
                             bgColor="#4285f4"
-                            onPress={() => handleInventoryClick(activity.activity_id,'INV_OUT')}
+                            onPress={() => handleInventoryClick(activity.activity_id, 'INV_OUT')}
                         >
                             <ButtonText>Production Update</ButtonText>
                         </ActionButton>
@@ -350,16 +344,16 @@ const ActivityScreen = (props) => {
                 )}
                 {activity.status == 'COMPLETED' && (
                     <>
-                <ActionButton
-                    bgColor="#4285f4"
-                    fullWidth={
-                        activity.status === 'COMPLETED'
-                    }
-                    onPress={() => handleViewDetails(activity)}
-                >
-                    <ButtonText>View Details</ButtonText>
-                </ActionButton>
-                </>
+                        <ActionButton
+                            bgColor="#4285f4"
+                            fullWidth={
+                                activity.status === 'COMPLETED'
+                            }
+                            onPress={() => handleViewDetails(activity)}
+                        >
+                            <ButtonText>View Details</ButtonText>
+                        </ActionButton>
+                    </>
                 )}
             </ButtonRow>
         </Card>

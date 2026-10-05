@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Modal, TouchableOpacity } from 'react-native';
+import { Text, Modal } from 'react-native';
 import styled from 'styled-components/native';
 
 
@@ -14,7 +14,7 @@ const ModalComponent = ({ isVisible, onClose, activityDetails }) => {
           {/* Activity Details */}
           {activityDetails ? (
             <>
-            {activityDetails.activity && (
+              {activityDetails.activity && (
                 <DetailText>
                   <BoldText>Activity Name:</BoldText> {activityDetails.activity}
                 </DetailText>
@@ -27,10 +27,10 @@ const ModalComponent = ({ isVisible, onClose, activityDetails }) => {
 
               {activityDetails.project_num && (
                 <DetailText>
-                <BoldText>Project Num.:</BoldText> {activityDetails.project_num}
-              </DetailText>
+                  <BoldText>Project Num.:</BoldText> {activityDetails.project_num}
+                </DetailText>
               )}
-              
+
               {activityDetails.user && (
                 <DetailText>
                   <BoldText>User Name:</BoldText> {activityDetails.user}
@@ -38,21 +38,21 @@ const ModalComponent = ({ isVisible, onClose, activityDetails }) => {
               )}
               {activityDetails.plannedStart && (
                 <DetailText>
-                <BoldText>Planned Start Date:</BoldText> {activityDetails.plannedStart}
-              </DetailText>
+                  <BoldText>Planned Start Date:</BoldText> {activityDetails.plannedStart}
+                </DetailText>
               )}
               {activityDetails.actualStart && (
                 <DetailText>
-                <BoldText>Actual Start Date:</BoldText> {activityDetails.actualStart}
-              </DetailText>
-              )}
-              
-              {activityDetails.plannedDuration && (
-                <DetailText>
-                <BoldText>Planned Duration:</BoldText> {activityDetails.plannedDuration} Days
+                  <BoldText>Actual Start Date:</BoldText> {activityDetails.actualStart}
                 </DetailText>
               )}
-              
+
+              {activityDetails.plannedDuration && (
+                <DetailText>
+                  <BoldText>Planned Duration:</BoldText> {activityDetails.plannedDuration} Days
+                </DetailText>
+              )}
+
 
               {activityDetails.actualDuration && (
                 <DetailText>

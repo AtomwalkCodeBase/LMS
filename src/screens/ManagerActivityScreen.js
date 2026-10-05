@@ -130,7 +130,7 @@ const StatusText = styled.Text`
     color: ${(props) => props.textColor || '#454545'};
 `;
 
-const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) => {
+const ManagerActivityScreen = ({ activityType = 'PROJECT', user, setCallType }) => {
   const navigation = useNavigation();
   const router = useRouter();
   const [isModalVisible, setModalVisible] = useState(false);
@@ -183,16 +183,16 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
         return 'Manager Activities';
     }
   };
-  
+
 
   const fetchActivityDetails = async (type) => {
     // alert(type);
     try {
       setLoading(true);
       const response = await getManagerActivityList({ call_mode: type });
-  
+
       const fetchedActivities = response?.data?.activity_list || [];
-  
+
       const updatedActivities = fetchedActivities.map((activity) => {
         // Check if activity_status exists and assign the corresponding status
         if (activity.activity_status) {
@@ -234,7 +234,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
         }
         return activity;
       });
-  
+
       setActivities(updatedActivities);
     } catch (error) {
       console.error('Error fetching activities:', error.message);
@@ -242,9 +242,9 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
       setLoading(false);
     }
   };
-  
-  
-  
+
+
+
 
   useEffect(() => {
     fetchActivityDetails(activityType);
@@ -254,13 +254,13 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
       setFilterValue(''); // Reset filter value
       setCurrentPage(1);  // Reset pagination
     };
-  },[activityType]
+  }, [activityType]
   )
 
   // useFocusEffect(
   //   React.useCallback(() => {
   //     fetchActivityDetails(activityType);
-  
+
   //     // Cleanup function to clear activities when screen loses focus
   //     return () => {
   //       setActivities([]); // Clear activities
@@ -269,7 +269,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
   //     };
   //   }, [activityType])
   // );
-  
+
 
   const filteredActivities = useMemo(
     () => (filterValue ? activities.filter((act) => act.order_ref_num === filterValue) : activities),
@@ -310,7 +310,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
         return '#6c757d'; // Gray for unknown or default status
     }
   };
-  
+
   const getBadgeTextColor = (status) => {
     switch (status) {
       case 'COMPLETED':
@@ -322,39 +322,37 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
         return '#fff'; // Dark gray for default or unknown status
     }
   };
-  
+
 
   const handleCompleteClick = (id) => {
     router.push({
-        pathname: 'MarkCompleteScreen',
-        params: { ref_num: id },
+      pathname: 'MarkCompleteScreen',
+      params: { ref_num: id },
     });
-};
+  };
 
 
   const handleQcClick = (id) => {
     router.push({
-        pathname: 'QcData',
-        params: { ref_num: id },
+      pathname: 'QcData',
+      params: { ref_num: id },
     });
-};
+  };
 
-  const handleInventoryClick = (id,type) => {
+  const handleInventoryClick = (id, type) => {
     router.push({
-        pathname: 'InventoryData',
-        params: { ref_num: id, ref_type: type },
+      pathname: 'InventoryData',
+      params: { ref_num: id, ref_type: type },
     });
-};
+  };
 
 
   // const loadMoreActivities = () => setCurrentPage((prev) => prev + 1);
 
-  console.log('Manager Activity List -',activities)
-
   const renderActivity = ({ item }) => {
     const isCurrentUser = item.user_name === user;
-    
-  
+
+
     return (
       <Card>
         <Row>
@@ -369,7 +367,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
         <SubText>Activity: {item.activity_name}</SubText>
         <SubText>Planned Start: {item.start_date || 'N/A'}</SubText>
         <SubText>Actual Start: {item.actual_start_date || 'N/A'}</SubText>
-  
+
         <ButtonRow>
           {isCurrentUser ? (
             <>
@@ -387,13 +385,13 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
               </ActionButton>
               <ActionButton
                 bgColor="#4285f4"
-                onPress={() => handleInventoryClick(item.pa_id,'INV_IN')}
+                onPress={() => handleInventoryClick(item.pa_id, 'INV_IN')}
               >
                 <ButtonText>Inventory Update</ButtonText>
               </ActionButton>
               <ActionButton
                 bgColor="#4285f4"
-                onPress={() => handleInventoryClick(item.pa_id,'INV_OUT')}
+                onPress={() => handleInventoryClick(item.pa_id, 'INV_OUT')}
               >
                 <ButtonText>Production Update</ButtonText>
               </ActionButton>
@@ -411,7 +409,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
       </Card>
     );
   };
-  
+
 
   return (
     <GradientBackground>
@@ -448,7 +446,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
               loadingMore && <Loader visible={loadingMore} /> // Show loader at the bottom while fetching
             }
           />
-         
+
         </>
       )}
       {isModalVisible && selectedActivity && (
@@ -462,7 +460,7 @@ const ManagerActivityScreen = ({ activityType = 'PROJECT' , user,setCallType }) 
             activity: selectedActivity?.activity_name,
             order: selectedActivity?.order_ref_num,
             user: selectedActivity?.user_name,
-            project_num : selectedActivity?.project_code,
+            project_num: selectedActivity?.project_code,
             plannedStart: selectedActivity?.start_date,
             actualStart: selectedActivity?.actual_start_date,
             plannedDuration: selectedActivity?.duration,

@@ -1,8 +1,9 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Animated, Easing } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation, useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import HeaderComponent from '../components/HeaderComponent';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const ResetPasswordScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -12,15 +13,15 @@ const ResetPasswordScreen = () => {
   const [userPin, setUserPin] = useState(null);
 
   useEffect(() => {
-      const fetchUserPin = async () => {
-          const storedPin = await AsyncStorage.getItem('userPin');
-          setUserPin(storedPin); // storedPin will be `null` if no value is found
-      };
-      fetchUserPin();
+    const fetchUserPin = async () => {
+      const storedPin = await AsyncStorage.getItem('userPin');
+      setUserPin(storedPin); // storedPin will be `null` if no value is found
+    };
+    fetchUserPin();
   }, []);
   const shakeAnim = new Animated.Value(0); // Animation for shaking error message
 
-  
+
   const navigation = useNavigation();
 
   const triggerShake = () => {
@@ -34,7 +35,7 @@ const ResetPasswordScreen = () => {
 
   const handleSubmit = async () => {
     const userPassword = await AsyncStorage.getItem('Password');
-    console.log(userPassword,"yrfyfyr")
+    console.log(userPassword, "yrfyfyr")
     const finalUsername = await AsyncStorage.getItem('Username');
     if (userPassword !== password) {
       setErrorMessage('Wrong Password');
@@ -55,7 +56,7 @@ const ResetPasswordScreen = () => {
       await AsyncStorage.setItem('userPin', pin);
       Alert.alert('Success', 'Your PIN and password have been saved.');
       setErrorMessage('');
-      router.push({pathname: 'home' });
+      router.push({ pathname: 'home' });
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'An error occurred while saving your data.');
@@ -63,48 +64,48 @@ const ResetPasswordScreen = () => {
   };
 
   return (
-    <>
-    <HeaderComponent headerTitle={`${userPin?"Update Your PIN":"Set Your PIN"}`} onBackPress={() => navigation.goBack()}></HeaderComponent>
-    
-    <View style={styles.container}>
-    
-      <Text style={styles.title}>{userPin?"Update Your PIN":"Set Your PIN"}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        placeholderTextColor="#888"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Your 4-Digit PIN"
-        keyboardType="numeric"
-        maxLength={4}
-        value={pin}
-        onChangeText={setPin}
-        secureTextEntry
-        placeholderTextColor="#888"
-      />
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
-        placeholder="Confirm PIN"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        placeholderTextColor="#888"
-      />
-      {errorMessage ? (
-        <Animated.Text style={[styles.error, { transform: [{ translateX: shakeAnim }] }]}>
-          {errorMessage}
-        </Animated.Text>
-      ) : null}
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitText}>Submit</Text>
-      </TouchableOpacity>
-    </View>
-    </>
+    <SafeAreaView style={{ flex: 1 }}>
+      <HeaderComponent headerTitle={`${userPin ? "Update Your PIN" : "Set Your PIN"}`} onBackPress={() => navigation.goBack()}></HeaderComponent>
+
+      <View style={styles.container}>
+
+        <Text style={styles.title}>{userPin ? "Update Your PIN" : "Set Your PIN"}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          placeholderTextColor="#888"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Your 4-Digit PIN"
+          keyboardType="numeric"
+          maxLength={4}
+          value={pin}
+          onChangeText={setPin}
+          secureTextEntry
+          placeholderTextColor="#888"
+        />
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          placeholder="Confirm PIN"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          placeholderTextColor="#888"
+        />
+        {errorMessage ? (
+          <Animated.Text style={[styles.error, { transform: [{ translateX: shakeAnim }] }]}>
+            {errorMessage}
+          </Animated.Text>
+        ) : null}
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitText}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 

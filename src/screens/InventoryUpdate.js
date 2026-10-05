@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Alert, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import HeaderComponent from '../components/HeaderComponent';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getActivitiQcData, postActivtyInventory } from '../services/productServices';
@@ -99,7 +99,7 @@ const UnitText = styled.Text`
 const InventoryUpdate = (props) => {
   const id = props.id;
   const call_type = props.type;
-  const navigation = useNavigation();
+  const router = useRouter();
   const [inventoryData, setInventoryData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -188,7 +188,7 @@ const InventoryUpdate = (props) => {
 
   return (
     <GradientBackground>
-      <HeaderComponent headerTitle={call_type === 'INV_IN' ? 'Consumption Items' : 'Production Items'} onBackPress={navigation.goBack} />
+      <HeaderComponent headerTitle={call_type === 'INV_IN' ? 'Consumption Items' : 'Production Items'} onBackPress={() => router.back()} />
       <Container>
         {filteredData.length === 0 ? (
           <EmptyMessage data={call_type === 'INV_IN' ? 'Consumption Items' : 'Production Items'} />
@@ -209,13 +209,13 @@ const InventoryUpdate = (props) => {
                 )}
               </HeadingRow>
               <SubText>
-                {item.flow_type === 'C' 
-                  ? `Already Consumed Qty: ${item.already_consumed_qty} ${item.item_base_unit}` 
+                {item.flow_type === 'C'
+                  ? `Already Consumed Qty: ${item.already_consumed_qty} ${item.item_base_unit}`
                   : `Estimated Qty: ${item.estimated_qty || 'N/A'} ${item.item_base_unit}`}
               </SubText>
               <SubText>
-                {item.flow_type === 'C' 
-                  ? `Released & Wastage: ${item.released_qty} ${item.item_base_unit} & ${item.wastage_qty} ${item.item_base_unit}` 
+                {item.flow_type === 'C'
+                  ? `Released & Wastage: ${item.released_qty} ${item.item_base_unit} & ${item.wastage_qty} ${item.item_base_unit}`
                   : `Produced Qty: ${item.already_consumed_qty || 'N/A'} ${item.item_base_unit}`}
               </SubText>
               <InputRow>

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import Modal from 'react-native-modal';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const CustomAlert = ({showalert,route, navigation,name,message,data,screen}) => {
+const CustomAlert = ({ showalert, route, navigation, name, message, data, screen }) => {
   const [isModalVisible, setModalVisible] = useState(showalert);
 
   // Function to toggle modal visibility
@@ -11,12 +10,12 @@ const CustomAlert = ({showalert,route, navigation,name,message,data,screen}) => 
     setModalVisible(!isModalVisible);
     navigationtoscreen();
   };
-  const navigationtoscreen=()=>{
-    if (screen == 'LeadTaskDetail'){
-      navigation.navigate('CustomerTasks',  {customer_id: '', name: data.name, lead_id: data.id, call_mode:'L',refresh: name });
+  const navigationtoscreen = () => {
+    if (screen == 'LeadTaskDetail') {
+      navigation.navigate('CustomerTasks', { customer_id: '', name: data.name, lead_id: data.id, call_mode: 'L', refresh: name });
     }
-    else{
-          navigation.navigate('TaskSreen', { refresh: name });
+    else {
+      navigation.navigate('TaskSreen', { refresh: name });
     }
 
   }
@@ -25,7 +24,7 @@ const CustomAlert = ({showalert,route, navigation,name,message,data,screen}) => 
     <View style={styles.container}>
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContainer}>
-        <MaterialIcons name="location-on" size={74} color="#4CAF50" />
+          <MaterialIcons name="location-on" size={74} color="#4CAF50" />
           <Text style={styles.message}>{message}</Text>
           <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
             <Text style={styles.closeButtonText}>OK</Text>

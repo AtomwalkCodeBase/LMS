@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import Modal from 'react-native-modal';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
@@ -11,7 +10,7 @@ const PinPopup = () => {
         const checkPopupPreference = async () => {
             const hasDeclinedPopup = await AsyncStorage.getItem('declinePinSetup');
             const userPin = await AsyncStorage.getItem('userPin');
-            if (!hasDeclinedPopup&&!userPin) {
+            if (!hasDeclinedPopup && !userPin) {
                 setIsPopupVisible(true);
             }
         };
@@ -33,31 +32,34 @@ const PinPopup = () => {
     };
 
     return (
-        <Modal isVisible={isPopupVisible} animationIn="zoomIn" animationOut="zoomOut">
-            <View style={styles.popupContainer}>
-                {/* Close Icon */}
-                <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-                    <Text style={styles.closeText}>X</Text>
-                </TouchableOpacity>
+        <Modal visible={isPopupVisible} animationType="fade" transparent onRequestClose={handleClose}>
+            <View style={styles.overlay}>
 
-                {/* Icon */}
-                <Image source={require('../../assets/images/pin.png')}
-                    style={styles.icon}
-                />
-
-                {/* Message */}
-                <Text style={styles.message}>
-                    Would you like to set your PIN?
-                </Text>
-
-                {/* Buttons */}
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.yesButton} onPress={handleYes}>
-                        <Text style={styles.buttonText}>YES</Text>
+                <View style={styles.popupContainer}>
+                    {/* Close Icon */}
+                    <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+                        <Text style={styles.closeText}>X</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.noButton} onPress={handleNo}>
-                        <Text style={styles.buttonText}>NO</Text>
-                    </TouchableOpacity>
+
+                    {/* Icon */}
+                    <Image source={require('../../assets/images/pin.png')}
+                        style={styles.icon}
+                    />
+
+                    {/* Message */}
+                    <Text style={styles.message}>
+                        Would you like to set your PIN?
+                    </Text>
+
+                    {/* Buttons */}
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.yesButton} onPress={handleYes}>
+                            <Text style={styles.buttonText}>YES</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.noButton} onPress={handleNo}>
+                            <Text style={styles.buttonText}>NO</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -65,11 +67,20 @@ const PinPopup = () => {
 };
 
 const styles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     popupContainer: {
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 20,
         alignItems: 'center',
+        width: 300,
+        minHeight: 220,
+        justifyContent: 'center',
     },
     closeButton: {
         position: 'absolute',

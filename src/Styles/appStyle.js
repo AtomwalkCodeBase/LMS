@@ -1,4 +1,5 @@
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from "styled-components/native";
 
 // Colors
@@ -12,12 +13,12 @@ export const colors = {
   white: '#fff',
   black: '#000',
   blue: '#5D5FEE',
-  lightgreen:'#90EE90',
+  lightgreen: '#90EE90',
   grey: '#BABBC3',
   light: '#F3F4FB',
   darkBlue: '#7978B5',
-  yellow:'#FFC300',
-  lightyellow:'#F7F9D1',
+  yellow: '#FFC300',
+  lightyellow: '#F7F9D1',
   offwhite: '#F8F6F0',
   red: '#ff2400',
   green: '#32cd32',
@@ -25,7 +26,7 @@ export const colors = {
   darkgrey: '#4c4c4c',
 };
 
-export const Container = styled.SafeAreaView`
+export const Container = styled(SafeAreaView)`
   background-color: ${colors.primary};
   padding: 20px;
   padding-bottom: 0px;

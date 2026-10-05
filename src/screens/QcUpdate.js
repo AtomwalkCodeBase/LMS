@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Dimensions, ScrollView, Alert } from 'react-native';
 import styled from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import HeaderComponent from '../components/HeaderComponent';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getActivitiQcData, postActivtyInventory } from '../services/productServices';
@@ -73,7 +73,7 @@ const TextInputStyled = styled.TextInput`
 
 const QcUpdate = (props) => {
   const id = props.id;
-  const navigation = useNavigation();
+  const router = useRouter();
   const [qcData, setQcData] = useState([]);
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
 
@@ -144,7 +144,7 @@ const QcUpdate = (props) => {
 
   return (
     <GradientBackground>
-      <HeaderComponent headerTitle="Quality Check Data" onBackPress={navigation.goBack} />
+      <HeaderComponent headerTitle="Quality Check Data" onBackPress={() => router.back()} />
       <Container>
         {qcData.length === 0 ? (
           <EmptyMessage data="Quality Check" />
@@ -156,7 +156,7 @@ const QcUpdate = (props) => {
         )}
       </Container>
       <ButtonContainer>
-      <SubmitButton
+        <SubmitButton
           label="Update QC Data"
           onPress={handleUpdateQcData}
           bgColor={colors.primary}

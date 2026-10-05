@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Dimensions, TextInput, ScrollView, Alert } from 'react-native';
 import styled from 'styled-components/native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import HeaderComponent from '../components/HeaderComponent';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getActivitiQcData, postActivtyInventory } from '../services/productServices';
-import SubmitButton from '../components/SubmitButton';
 import { colors } from '../Styles/appStyle';
 
 const { width, height } = Dimensions.get('window');
@@ -106,7 +105,7 @@ const CheckboxLabel = styled.Text`
 // Main Component
 const MarkCompleteScreen = (props) => {
   const id = props.id;
-  const navigation = useNavigation();
+  const router = useRouter();
   const [qcData, setQcData] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -120,8 +119,8 @@ const MarkCompleteScreen = (props) => {
   };
 
   const handleBackPress = () => {
-    navigation.goBack();
-};
+    router.back();
+  };
 
   const fetchQcData = async () => {
     try {
@@ -176,36 +175,36 @@ const MarkCompleteScreen = (props) => {
   };
 
   return (
-    
-      <GradientBackground>
-        <HeaderComponent headerTitle="Mark Activity Complete" onBackPress={navigation.goBack} />
-        <ButtonContainer>
-          <Container>
-            {qcData.map((item, index) => (
-              <Card key={index}>
-                <BoldText>{item.qc_name}</BoldText>
-                <SubText>Permissible Value: {item.qc_value}</SubText>
-                {/* <TextInputStyled
+
+    <GradientBackground>
+      <HeaderComponent headerTitle="Mark Activity Complete" onBackPress={() => router.back()} />
+      <ButtonContainer>
+        <Container>
+          {qcData.map((item, index) => (
+            <Card key={index}>
+              <BoldText>{item.qc_name}</BoldText>
+              <SubText>Permissible Value: {item.qc_value}</SubText>
+              {/* <TextInputStyled
                   placeholder="Enter actual value"
                   value={String(item.qc_actual || '')}
                   onChangeText={(value) => handleInputChange(index, value)}
                 /> */}
-                {/* <SubmitButton
+              {/* <SubmitButton
                   label="Update QC Data"
                   onPress={() => handleUpdateQcData(item)}
                   bgColor={colors.primary}
                   textColor="white"
                 /> */}
-              </Card>
-            ))}
-          </Container>
-          <ActionButton onPress={handleMarkAsCompleted}>
-            <ButtonText>{isCompleted ? 'Unmark as Completed' : 'Mark as Completed'}</ButtonText>
-          </ActionButton>
-        </ButtonContainer>
-      </GradientBackground>
-    );
-    
+            </Card>
+          ))}
+        </Container>
+        <ActionButton onPress={handleMarkAsCompleted}>
+          <ButtonText>{isCompleted ? 'Unmark as Completed' : 'Mark as Completed'}</ButtonText>
+        </ActionButton>
+      </ButtonContainer>
+    </GradientBackground>
+  );
+
 };
 
 export default MarkCompleteScreen;

@@ -18,9 +18,9 @@ background-color: #f5f5f5;
 `;
 
 const GradientBackground = styled(LinearGradient).attrs({
-colors: ['#c2fbcd', '#ffdde1'],
-start: { x: 0, y: 0 },
-end: { x: 1, y: 1 },
+    colors: ['#c2fbcd', '#ffdde1'],
+    start: { x: 0, y: 0 },
+    end: { x: 1, y: 1 },
 })`
 align-items: center;
 height: 100%;
@@ -58,7 +58,7 @@ margin-top: 5%;
 `;
 
 const Logo = styled.Image.attrs(() => ({
-resizeMode: 'contain',
+    resizeMode: 'contain',
 }))`
 width: 95%;
 height: 95%;
@@ -117,180 +117,179 @@ margin-bottom: 5px;
 `;
 
 const ManagerHomePage = () => {
-const router = useRouter();
-const { userToken } = useContext(AppContext);
-const [company, setCompany] = useState({});
-const [loading, setLoading] = useState(false);
-const [activities, setActivities] = useState([]);
-const [overdue, setOverdue] = useState(0);
-const [total, setToday] = useState(0);
-const [completed, setCompleted] = useState(0);
-const [dueTotal, setDueToday] = useState(0);
-const [future, setFuture] = useState(0);
-const [dueTomorow, setDueTomorow] = useState(0);
-const [overDueNS, setOverDueNS] = useState(0);
-const [overDueAS, setOverDueAS] = useState(0);
+    const router = useRouter();
+    const { userToken } = useContext(AppContext);
+    const [company, setCompany] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [activities, setActivities] = useState([]);
+    const [overdue, setOverdue] = useState(0);
+    const [total, setToday] = useState(0);
+    const [completed, setCompleted] = useState(0);
+    const [dueTotal, setDueToday] = useState(0);
+    const [future, setFuture] = useState(0);
+    const [dueTomorow, setDueTomorow] = useState(0);
+    const [overDueNS, setOverDueNS] = useState(0);
+    const [overDueAS, setOverDueAS] = useState(0);
 
-useEffect(() => {
-    setLoading(true);
-    fetchActivityDetails('PROJECT');
-    
-    getCompanyInfo()
-        .then((res) => {
-            setCompany(res.data);
-        })
-        .catch(() => {})
-}, []);
+    useEffect(() => {
+        setLoading(true);
+        fetchActivityDetails('PROJECT');
 
-
-
-const fetchActivityDetails = (callType) => {
-    setLoading(true);
-    const data = {
-        call_mode: callType || 'PROJECT',
-      };
-    getManagerActivityList(data)
-        .then((res) => {
-            console.log('response',res?.data)
-            setActivities(res?.data?.activity_list || []);
-            setOverdue(res?.data?.over_due_count || 0);
-            setToday(res?.data?.due_today || 0);
-            setDueToday(res?.data?.due_today_completed || 0);
-            setFuture(res?.data?.future_completed || 0);
-            setCompleted(res?.data?.over_due_completed || 0);
-            setDueTomorow(res?.data?.due_tomorrow || 0);
-            setOverDueNS(res?.data?.due_7_days || 0);
-            setOverDueAS(res?.data?.not_due_count || 0);
-        })
-        .catch((error) => console.log('Error on home screen', error))
-        .finally(() => setLoading(false));
-};
+        getCompanyInfo()
+            .then((res) => {
+                setCompany(res.data);
+            })
+            .catch(() => { })
+    }, []);
 
 
 
+    const fetchActivityDetails = (callType) => {
+        setLoading(true);
+        const data = {
+            call_mode: callType || 'PROJECT',
+        };
+        getManagerActivityList(data)
+            .then((res) => {
+                setActivities(res?.data?.activity_list || []);
+                setOverdue(res?.data?.over_due_count || 0);
+                setToday(res?.data?.due_today || 0);
+                setDueToday(res?.data?.due_today_completed || 0);
+                setFuture(res?.data?.future_completed || 0);
+                setCompleted(res?.data?.over_due_completed || 0);
+                setDueTomorow(res?.data?.due_tomorrow || 0);
+                setOverDueNS(res?.data?.due_7_days || 0);
+                setOverDueAS(res?.data?.not_due_count || 0);
+            })
+            .catch((error) => console.log('Error on home screen', error))
+            .finally(() => setLoading(false));
+    };
 
-const handleCardClick = (callType) => {
-    router.push({
-        pathname: 'activity',
-        params: { call_type: callType },
-    });
-};
-
-const cardColors = [
-    ['#FF6F61', '#D32F2F'], // Overdue
-    ['#FFA726', '#FB8C00'], // Planned for Today
-    ['#66BB6A', '#388E3C'], // Due Today Completed
-    ['#AB47BC', '#8E24AA'], // Due Tomorrow
-    ['#42A5F5', '#1976D2'], // Due Next 7 Days
-    ['#26C6DA', '#0097A7'], // Due After 7 Days
-    ['#81C784', '#2E7D32'], // Overdue Completed
-    ['#26A69A', '#00796B'], // Future Activity Completed
-];
 
 
 
-// console.log('Activity List======',activities)
+    const handleCardClick = (callType) => {
+        router.push({
+            pathname: 'activity',
+            params: { call_type: callType },
+        });
+    };
 
-return (
-    <Container>
-        <Loader visible={loading} />
-        <GradientBackground>
-            <CompanyContainer>
-                <LogoContainer>
-                    <Logo
-                        source={{
-                            uri: company.image || 'https://home.atomwalk.com/static/media/Atom_walk_logo-removebg-preview.21661b59140f92dd7ced.png',
-                        }}
-                    />
-                </LogoContainer>
-                <CompanyTextContainer>
-                    <CompanyName>{company.name || 'Atomwalk Technologies'}</CompanyName>
-                    <SubHeader>Welcome to Atomwalk Office!</SubHeader>
-                </CompanyTextContainer>
-            </CompanyContainer>
-            <ProfileTextContainer>
-                <CompanyName>Manage Activities</CompanyName>
-            </ProfileTextContainer>
+    const cardColors = [
+        ['#FF6F61', '#D32F2F'], // Overdue
+        ['#FFA726', '#FB8C00'], // Planned for Today
+        ['#66BB6A', '#388E3C'], // Due Today Completed
+        ['#AB47BC', '#8E24AA'], // Due Tomorrow
+        ['#42A5F5', '#1976D2'], // Due Next 7 Days
+        ['#26C6DA', '#0097A7'], // Due After 7 Days
+        ['#81C784', '#2E7D32'], // Overdue Completed
+        ['#26A69A', '#00796B'], // Future Activity Completed
+    ];
 
-            <ScrollView 
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}>
-                {/* Render the rows dynamically based on condition */}
-                <Row>
-                    {overdue > 0 && (
-                        <InfoCard
-                            number={overdue}
-                            label="Over Due"
-                            iconName="alert"
-                            gradientColors={cardColors[0]}
-                            onPress={() => handleCardClick('GET_OD')}
+
+
+    // console.log('Activity List======',activities)
+
+    return (
+        <Container>
+            <Loader visible={loading} />
+            <GradientBackground>
+                <CompanyContainer>
+                    <LogoContainer>
+                        <Logo
+                            source={{
+                                uri: company.image || 'https://home.atomwalk.com/static/media/Atom_walk_logo-removebg-preview.21661b59140f92dd7ced.png',
+                            }}
                         />
-                    )}
-                    {overdue > 0 && (
+                    </LogoContainer>
+                    <CompanyTextContainer>
+                        <CompanyName>{company.name || 'Atomwalk Technologies'}</CompanyName>
+                        <SubHeader>Welcome to Atomwalk Office!</SubHeader>
+                    </CompanyTextContainer>
+                </CompanyContainer>
+                <ProfileTextContainer>
+                    <CompanyName>Manage Activities</CompanyName>
+                </ProfileTextContainer>
+
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}>
+                    {/* Render the rows dynamically based on condition */}
+                    <Row>
+                        {overdue > 0 && (
+                            <InfoCard
+                                number={overdue}
+                                label="Over Due"
+                                iconName="alert"
+                                gradientColors={cardColors[0]}
+                                onPress={() => handleCardClick('GET_OD')}
+                            />
+                        )}
+                        {overdue > 0 && (
+                            <InfoCard
+                                number={completed}
+                                label="Due Completed"
+                                iconName="clipboard-check"
+                                gradientColors={cardColors[7]}
+                                onPress={() => handleCardClick('GET_OC')}
+                            />
+                        )}
+
+                    </Row>
+                    <Row>
                         <InfoCard
-                            number={completed}
-                            label="Due Completed"
-                            iconName="clipboard-check"
-                            gradientColors={cardColors[7]}
-                            onPress={() => handleCardClick('GET_OC')}
+                            number={total}
+                            label="Planned Today"
+                            iconName="application-edit-outline"
+                            gradientColors={cardColors[1]}
+                            onPress={() => handleCardClick('GET_DT')}
                         />
-                    )}
-                    
-                </Row>
-                <Row>
-                <InfoCard
-                        number={total}
-                        label="Planned Today"
-                        iconName="application-edit-outline"
-                        gradientColors={cardColors[1]}
-                        onPress={() => handleCardClick('GET_DT')}
-                    />
-                    <InfoCard
-                        number={dueTotal}
-                        label="Due Today"
-                        iconName="check-circle"
-                        gradientColors={cardColors[2]}
-                        onPress={() => handleCardClick('GET_DC')}
-                    />
-                    
-                </Row>
-                <Row>
-                    <InfoCard
-                        number={dueTomorow}
-                        label="Due Tomorrow"
-                        iconName="account-clock-outline"
-                        gradientColors={cardColors[3]}
-                        onPress={() => handleCardClick('GET_D1')}
-                    />
-                    <InfoCard
-                        number={overDueNS}
-                        label="Next 7 Days"
-                        iconName="bell"
-                        gradientColors={cardColors[4]}
-                        onPress={() => handleCardClick('GET_D7')}
-                    />
-                    
-                </Row>
-                <Row>
-                    <InfoCard
-                    number={overDueAS}
-                    label="After 7 days"
-                    iconName="bell-off"
-                    gradientColors={cardColors[5]}
-                    onPress={() => handleCardClick('GET_ND')}
-                    />
-                    <InfoCard
-                        number={future}
-                        label="Future Activity"
-                        iconName="calendar-clock-outline"
-                        gradientColors={cardColors[2]}
-                        onPress={() => handleCardClick('GET_FC')}
-                    />
-                </Row>
-            </ScrollView>
-        </GradientBackground>
-    </Container>
-);
+                        <InfoCard
+                            number={dueTotal}
+                            label="Due Today"
+                            iconName="check-circle"
+                            gradientColors={cardColors[2]}
+                            onPress={() => handleCardClick('GET_DC')}
+                        />
+
+                    </Row>
+                    <Row>
+                        <InfoCard
+                            number={dueTomorow}
+                            label="Due Tomorrow"
+                            iconName="account-clock-outline"
+                            gradientColors={cardColors[3]}
+                            onPress={() => handleCardClick('GET_D1')}
+                        />
+                        <InfoCard
+                            number={overDueNS}
+                            label="Next 7 Days"
+                            iconName="bell"
+                            gradientColors={cardColors[4]}
+                            onPress={() => handleCardClick('GET_D7')}
+                        />
+
+                    </Row>
+                    <Row>
+                        <InfoCard
+                            number={overDueAS}
+                            label="After 7 days"
+                            iconName="bell-off"
+                            gradientColors={cardColors[5]}
+                            onPress={() => handleCardClick('GET_ND')}
+                        />
+                        <InfoCard
+                            number={future}
+                            label="Future Activity"
+                            iconName="calendar-clock-outline"
+                            gradientColors={cardColors[2]}
+                            onPress={() => handleCardClick('GET_FC')}
+                        />
+                    </Row>
+                </ScrollView>
+            </GradientBackground>
+        </Container>
+    );
 
 };
 
