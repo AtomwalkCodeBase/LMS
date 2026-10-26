@@ -43,6 +43,7 @@ const Activity = () => {
   //   );
   // }
 
+
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top']}>
       {isManager ? (
